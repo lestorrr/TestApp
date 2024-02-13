@@ -70,8 +70,8 @@ const App = () => {
       </View>
       <UltrasonicScreen sensorData={sensorData} />
       <View style={styles.countContainer}>
-        <Text style={styles.countText}>Person Detected: {personDetectedCount}</Text>
-        <Text style={styles.countText}>No Person Detected: {noPersonDetectedCount}</Text>
+        <Text style={styles.countText}>USED: {personDetectedCount}</Text>
+        <Text style={styles.countText}>VACANT: {noPersonDetectedCount}</Text>
       </View>
     </View>
   );
