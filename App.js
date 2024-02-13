@@ -78,19 +78,25 @@ const App = () => {
 };
 
 const styles = StyleSheet.create({
+  titleText: {
+    fontSize: 30,
+    color: 'white',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    padding: 10,
+    backgroundColor: '#40491B',
+
   },
   tabContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginBottom: 20,
+    marginBottom: 30,
   },
   sensorContainer: {
-    marginBottom: 20,
+    marginBottom: 2,
   },
   sensorItem: {
     flexDirection: 'column',
@@ -98,15 +104,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 30,
     paddingVertical: 5,
-    backgroundColor: '#e0e0e0',
-    borderRadius: 70,
+    backgroundColor: '#C8DAA0',
+    borderRadius: 50,
     width: '100%',
     marginBottom: 2,
   },
   sensorLabel: {
     paddingHorizontal: 5,
     paddingVertical: 5,
-    backgroundColor: '#e0e0e0',
+    backgroundColor: '#FFFFFF',
     borderRadius: 60,
     width: '100%',
     marginBottom: 1,
@@ -118,12 +124,13 @@ const styles = StyleSheet.create({
 
   },
   countContainer: {
-    marginTop: 10,
+    marginTop: 1,
   },
   countText: {
-    fontSize: 30,
+    fontSize: 20,
     fontWeight: 'bold',
   },
+
 });
 
 export default App;
