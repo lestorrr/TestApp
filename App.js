@@ -3,7 +3,7 @@ import { View, Text, Button, StyleSheet } from 'react-native';
 import axios from 'axios';
 import Slider from '@react-native-community/slider';
 
-const UltrasonicScreen = ({ sensorData }) => {
+const UltrasonicScreen = ({ sensorData, handleOpenDoor, handleCloseDoor }) => {
   return (
     <View style={styles.container}>
       <View style={styles.sensorContainer}>
@@ -13,6 +13,10 @@ const UltrasonicScreen = ({ sensorData }) => {
         <SensorItem label="Chair 4" value={sensorData.chair4} />
         <SensorItem label="Chair 5" value={sensorData.chair5} />
         <SensorItem label="Chair 6" value={sensorData.chair6} />
+      </View>
+      <View style={styles.servoButtonContainer}>
+        <Button title="Open Door" onPress={handleOpenDoor} />
+        <Button title="Close Door" onPress={handleCloseDoor} />
       </View>
     </View>
   );
@@ -62,13 +66,33 @@ const App = () => {
     }
   };
 
+  const handleOpenDoor = async () => {
+    try {
+      await axios.get('ESP266_IP_ADDRESS/open');
+      console.log('Door opened');
+    } catch (error) {
+      console.error('Error opening door:', error);
+    }
+  };
+
+  const handleCloseDoor = async () => {
+    try {
+      await axios.get('ESP266_IP_ADDRESS/close');
+      console.log('Door closed');
+    } catch (error) {
+      console.error('Error closing door:', error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.titleText}>Vacant Seat Monitoring</Text>
-      <View style={styles.tabContainer}>
-
-      </View>
-      <UltrasonicScreen sensorData={sensorData} />
+      <View style={styles.tabContainer}></View>
+      <UltrasonicScreen
+        sensorData={sensorData}
+        handleOpenDoor={handleOpenDoor}
+        handleCloseDoor={handleCloseDoor}
+      />
       <View style={styles.countContainer}>
         <Text style={styles.countText}>USED: {personDetectedCount}</Text>
         <Text style={styles.countText}>VACANT: {noPersonDetectedCount}</Text>
@@ -88,7 +112,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 10,
     backgroundColor: '#40491B',
-
   },
   tabContainer: {
     flexDirection: 'row',
@@ -102,10 +125,10 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 30,
-    paddingVertical: 5,
+    paddingHorizontal: 10,
+    paddingVertical: 2,
     backgroundColor: '#C8DAA0',
-    borderRadius: 50,
+    borderRadius: 10,
     width: '100%',
     marginBottom: 2,
   },
@@ -116,21 +139,25 @@ const styles = StyleSheet.create({
     borderRadius: 60,
     width: '100%',
     marginBottom: 1,
-    fontSize: 19,
+    fontSize: 14,
     fontWeight: 'bold',
   },
   sensorValue: {
-    fontSize: 20,
-
+    fontSize: 16,
   },
   countContainer: {
-    marginTop: 1,
+    marginTop: 10,
   },
   countText: {
     fontSize: 20,
     fontWeight: 'bold',
   },
-
+  servoButtonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: 10,
+    width: '100%',
+  },
 });
 
 export default App;
