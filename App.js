@@ -10,9 +10,6 @@ const UltrasonicScreen = ({ sensorData, handleOpenDoor, handleCloseDoor }) => {
         <SensorItem label="Chair 1" value={sensorData.chair1} />
         <SensorItem label="Chair 2" value={sensorData.chair2} />
         <SensorItem label="Chair 3" value={sensorData.chair3} />
-        <SensorItem label="Chair 4" value={sensorData.chair4} />
-        <SensorItem label="Chair 5" value={sensorData.chair5} />
-        <SensorItem label="Chair 6" value={sensorData.chair6} />
       </View>
       <View style={styles.servoButtonContainer}>
         <Button title="Open Door" onPress={handleOpenDoor} />
@@ -21,6 +18,7 @@ const UltrasonicScreen = ({ sensorData, handleOpenDoor, handleCloseDoor }) => {
     </View>
   );
 };
+
 
 const SensorItem = ({ label, value }) => {
   const detectedValue = value === 'No person detected' ? value : 'Person detected';
@@ -39,24 +37,21 @@ const App = () => {
     chair1: 'No person detected',
     chair2: 'No person detected',
     chair3: 'No person detected',
-    chair4: 'No person detected',
-    chair5: 'No person detected',
-    chair6: 'No person detected',
   });
   const [personDetectedCount, setPersonDetectedCount] = useState(0);
   const [noPersonDetectedCount, setNoPersonDetectedCount] = useState(0);
 
   useEffect(() => {
-    const interval = setInterval(fetchData, 1000);
+    const interval = setInterval(fetchData, 500);
     return () => clearInterval(interval);
   }, []);
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('ESP266_IP_ADDRESS/sensors');
+      const response = await axios.get('http://192.168.1.104/sensors');
       setSensorData(response.data);
 
-      const detectedCount = Object.values(response.data).filter(value => value !== 'No person detected').length;
+      const detectedCount = Object.values(response.data).filter(value => value !== 'person detected').length;
       const notDetectedCount = Object.values(response.data).filter(value => value === 'No person detected').length;
 
       setPersonDetectedCount(detectedCount);
@@ -68,7 +63,7 @@ const App = () => {
 
   const handleOpenDoor = async () => {
     try {
-      await axios.get('ESP266_IP_ADDRESS/open');
+      await axios.get('http://192.168.1.104/open');
       console.log('Door opened');
     } catch (error) {
       console.error('Error opening door:', error);
@@ -77,7 +72,7 @@ const App = () => {
 
   const handleCloseDoor = async () => {
     try {
-      await axios.get('ESP266_IP_ADDRESS/close');
+      await axios.get('http://192.168.1.104/close');
       console.log('Door closed');
     } catch (error) {
       console.error('Error closing door:', error);
